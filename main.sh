@@ -7,9 +7,27 @@ VERDE='\e[1;92m'
 AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
-proximo_boot () {
-	echo 'gnome-extensions enable ubuntu-appindicators@ubuntu.com' | sudo tee -a /etc/rc.local
-	echo 'xdg-settings set default-web-browser google-chrome.desktop' | sudo tee -a /etc/rc.local
+inicializacao () {
+	# Verifica se o diretório ~/.config/autostart existe, se não, cria.
+	if [ ! -d ~/.config/autostart ]; then
+	    mkdir -p ~/.config/autostart
+	fi
+
+	# Adiciona o primeiro comando
+	echo "[Desktop Entry]
+	Type=Application
+	Exec=gnome-extensions enable ubuntu-appindicators@ubuntu.com
+	Hidden=false
+	X-GNOME-Autostart-enabled=true
+	Name=Habilitar App Indicators" > ~/.config/autostart/enable_app_indicators.desktop
+
+	# Adiciona o segundo comando
+	echo "[Desktop Entry]
+	Type=Application
+	Exec=xdg-settings set default-web-browser google-chrome.desktop
+	Hidden=false
+	X-GNOME-Autostart-enabled=true
+	Name=Definir Google Chrome como navegador padrão" > ~/.config/autostart/set_default_browser.desktop
 }
 
 install_tlp () { # Baixa e instala tlp para notebooks.
@@ -231,7 +249,7 @@ main_update_debian () {
 	instala_chrome
 	mk_soft
 	system_clean
-	proximo_boot
+	inicializacao
 	echo -e "${AZUL}\nFinalizado com exito! Por favor reinicie o sistema.\n${SEM_COR}"
 	sleep 2
 }
