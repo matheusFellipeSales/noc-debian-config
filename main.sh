@@ -21,8 +21,11 @@ misc () { # Baixa e define o papel de parede.
 
 	# Habilita o botão de maximizar e minimizar.
 	gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+
+	# Desabilita barulho chato do dude.
+	gsettings set org.gnome.desktop.sound event-sounds false
 	
-	# Habilita system tray
+	# Habilita system tray.
 	sudo apt install gnome-shell-extension-appindicator && \
 	gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
 
