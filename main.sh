@@ -8,9 +8,10 @@ AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
 install_tlp () { # Baixa e instala tlp para notebooks.
+	sudo systemctl disable --now power-profiles-daemon.service
 	sudo apt remove power-profiles-daemon -y && \
 	sudo apt install tlp tlp-rdw -y && \
-	sudo systemctl disable --now power-profiles-daemon.service
+	sudo systemctl enable --now tlp.service
 }
 
 misc () { # Baixa e define o papel de parede.
@@ -26,7 +27,7 @@ misc () { # Baixa e define o papel de parede.
 	
 	# Habilita system tray.
 	sudo apt install gnome-shell-extension-appindicator -y && \
-	gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
+	gnome-extensions enable ubuntu-appindicators@ubuntu.com
 
 	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
 }
