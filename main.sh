@@ -8,19 +8,8 @@ AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
 proximo_boot () {
-	# Definir os comandos a serem adicionados
-	commands=(
-	    "gnome-extensions enable ubuntu-appindicators@ubuntu.com"
-	    "xdg-settings set default-web-browser google-chrome.desktop"
-	)
-
-	# Adicionar os comandos ao arquivo rc.local
-	for cmd in "${commands[@]}"; do
-	    grep -qF "$cmd" /etc/rc.local || echo "$cmd" | sudo tee -a /etc/rc.local > /dev/null
-	done
-
-	# Tornar o arquivo rc.local executável
-	sudo chmod +x /etc/rc.local
+	echo 'gnome-extensions enable ubuntu-appindicators@ubuntu.com' | sudo tee -a /etc/rc.local
+	echo 'xdg-settings set default-web-browser google-chrome.desktop' | sudo tee -a /etc/rc.local
 }
 
 install_tlp () { # Baixa e instala tlp para notebooks.
@@ -242,6 +231,7 @@ main_update_debian () {
 	instala_chrome
 	mk_soft
 	system_clean
+	proximo_boot
 	echo -e "${AZUL}\nFinalizado com exito! Por favor reinicie o sistema.\n${SEM_COR}"
 	sleep 2
 }
