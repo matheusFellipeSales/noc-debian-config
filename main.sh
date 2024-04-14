@@ -13,7 +13,7 @@ inicializacao () {
 	    mkdir -p ~/.config/autostart
 	fi
 
-	# Adiciona o primeiro comando
+	# Tray do sistema ao inicializar.
 	echo "[Desktop Entry]
 	Type=Application
 	Exec=gnome-extensions enable ubuntu-appindicators@ubuntu.com
@@ -21,7 +21,7 @@ inicializacao () {
 	X-GNOME-Autostart-enabled=true
 	Name=Habilitar App Indicators" > ~/.config/autostart/enable_app_indicators.desktop
 
-	# Adiciona o segundo comando
+	# Google chrome como navegador principal ao inicializar.
 	echo "[Desktop Entry]
 	Type=Application
 	Exec=xdg-settings set default-web-browser google-chrome.desktop
@@ -50,10 +50,6 @@ misc () { # Baixa e define o papel de parede.
 
 	# Desabilita barulho chato do dude.
 	gsettings set org.gnome.desktop.sound event-sounds false
-	
-	# Habilita system tray.
-	sudo apt install gnome-shell-extension-appindicator -y
-	gnome-extensions enable ubuntu-appindicators@ubuntu.com
 
 	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
 }
@@ -138,6 +134,7 @@ programas_para_instalar=( # Lisagem de programas a serem instalados.
 	ca-certificates
 	software-properties-common
 	printer-driver-all
+	gnome-shell-extension-appindicator
 )
 
 instala_apt_packages () { # Instala programas da source $programas_para_instalar
@@ -198,7 +195,6 @@ instala_chrome () { # Instala google chrome
 	mkdir -p $HOME/Downloads/chrome
 	wget -P $HOME/Downloads/chrome https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 	sudo sudo dpkg -i $HOME/Downloads/chrome/google-chrome-stable_current_amd64.deb
-	xdg-settings set default-web-browser google-chrome.desktop
 	echo -e "\n${VERDE}Instalado Google Chrome${SEM_COR}\n"
 	sleep 1
 }
