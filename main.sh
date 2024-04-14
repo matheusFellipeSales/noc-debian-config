@@ -8,10 +8,10 @@ AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
 install_tlp () { # Baixa e instala tlp para notebooks.
-	sudo systemctl disable --now power-profiles-deamon.service
-	sudo apt remove power-profiles-deamon && \
+	sudo systemctl disable --now power-profiles-daemon.service
+	sudo apt remove power-profiles-daemon && \
 	sudo apt install tlp tlp-rdw && \
-	sudo systemctl disable --now power-profiles-deamon.service
+	sudo systemctl disable --now power-profiles-daemon.service
 }
 
 misc () { # Baixa e define o papel de parede.
