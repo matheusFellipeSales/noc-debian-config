@@ -48,9 +48,9 @@ instala_adw3 () { # Habilita suporte a temas libadwaita trazendo melhora visual 
 	sleep 1
 }
 
-unattended-upgrade () { # Habilitando security updates automáticos.
-	sudo apt install unattended-upgrade -y
-	sudo systemctl enable --now unattended-upgrade
+unattended-upgrades () { # Habilitando security updates automáticos.
+	sudo apt install unattended-upgrades -y
+	sudo systemctl enable --now unattended-upgrades
 	echo -e "\n${VERDE}Habilitado Security Updates Automáticos com sucesso!${SEM_COR}\n"
 }
 
@@ -217,14 +217,14 @@ main_update_debian () {
 	misc
 	instala_wine
 	system_update
-	unattended-upgrade
+	unattended-upgrades
 	suporte_flatpak
 	instala_adw3
 	instala_chrome
 	mk_soft
 	system_clean
-	echo -e "${AZUL}\nFinalizado com exito!\n${SEM_COR}"
-	sleep 3
+	echo -e "${AZUL}\nFinalizado com exito! Por favor reinicie o sistema.\n${SEM_COR}"
+	sleep 2
 }
 
 main () {
