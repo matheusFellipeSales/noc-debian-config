@@ -8,9 +8,8 @@ AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
 install_tlp () { # Baixa e instala tlp para notebooks.
-	sudo systemctl disable --now power-profiles-daemon.service
-	sudo apt remove power-profiles-daemon && \
-	sudo apt install tlp tlp-rdw && \
+	sudo apt remove power-profiles-daemon -y && \
+	sudo apt install tlp tlp-rdw -y && \
 	sudo systemctl disable --now power-profiles-daemon.service
 }
 
@@ -26,14 +25,14 @@ misc () { # Baixa e define o papel de parede.
 	gsettings set org.gnome.desktop.sound event-sounds false
 	
 	# Habilita system tray.
-	sudo apt install gnome-shell-extension-appindicator && \
+	sudo apt install gnome-shell-extension-appindicator -y && \
 	gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
 
 	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
 }
 
 instala_zramtool () { # Habilita o swap em arquivo (Zram).
-	sudo apt install zram-tools
+	sudo apt install zram-tools -y
 	echo -e "ALGO=zstd\nPERCENT=20" | sudo tee -a /etc/default/zramswap
 	echo -e "\n${VERDE}Habilitado suporte Zram!${SEM_COR}\n"
 }
@@ -42,7 +41,7 @@ instala_adw3 () { # Habilita suporte a temas libadwaita trazendo melhora visual 
 	mkdir -p $HOME/Downloads/adw3
 	wget -P $HOME/Downloads/adw3 https://github.com/lassekongo83/adw-gtk3/releases/download/v5.1/adw-gtk3v5-1.tar.xz
 	sudo tar -xf $HOME/Downloads/adw3/adw-gtk3v5-1.tar.xz -C /usr/share/themes
-	flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+	flatpak install --noninteractive org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
 	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 	echo -e "\n${VERDE}Habilitado suporte a thema legado libadwaita dark!${SEM_COR}\n"
 	sleep 1
@@ -196,7 +195,7 @@ repositorio_non-free () { # Habilita o repositório non-free
 
 instala_wine () { # Adiciona arquitetura de 32 bits e instala o Wine
 	sudo dpkg --add-architecture i386 && sudo apt update
-	sudo apt install \
+	sudo apt install -y \
       wine \
       wine32 \
       wine64 \
