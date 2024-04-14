@@ -10,6 +10,7 @@ SEM_COR='\e[0m'
 define_wallpaper () { # Baixa e define o papel de parede.
 	wget https://github.com/qrocafe1535/noc-debian-config/raw/main/wallapaper/debian-wallpaper.png -O $HOME/Imagens/debian-wallpaper.png
 	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Imagens/debian-wallpaper.png"
+	gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Imagens/debian-wallpaper.png"
 	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
 }
 
@@ -179,16 +180,27 @@ repositorio_non-free () { # Habilita o repositório non-free
 	sudo apt-add-repository contrib non-free -y
 }
 
-instala_wine () { # Instala o wine no debian.
-	sudo dpkg --add-architecture i386
-	sudo mkdir -pm755 /etc/apt/keyrings
-	sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-	sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
-	sudo apt update
-	sudo apt install --install-recommends winehq-stable -y
-	echo -e "${VERDE}Wine instalado...${SEM_COR}\n"
-	sleep 1
+instala_wine () { # Adiciona arquitetura de 32 bits e instala o Wine
+	sudo dpkg --add-architecture i386 && sudo apt update
+	sudo apt install \
+      wine \
+      wine32 \
+      wine64 \
+      libwine \
+      libwine:i386 \
+      fonts-wine
 }
+
+# instala_wine () { # Instala o wine no debian.
+# 	sudo dpkg --add-architecture i386
+# 	sudo mkdir -pm755 /etc/apt/keyrings
+# 	sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+# 	sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
+# 	sudo apt update
+# 	sudo apt install --install-recommends winehq-stable -y
+# 	echo -e "${VERDE}Wine instalado...${SEM_COR}\n"
+# 	sleep 1
+# }
 
 main_update_debian () {
 	echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
