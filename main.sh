@@ -181,7 +181,7 @@ system_clean () {
 	flatpak update -y
 	sudo apt autoclean -y
 	sudo apt autoremove -y
-	sudo apt install -f
+	sudo apt install -f -y
 	sudo rm -r $HOME/Downloads/chrome
 	sudo rm -r $HOME/Downloads/Dude
 	sudo rm -r $HOME/Downloads/Winbox
