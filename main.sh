@@ -7,10 +7,25 @@ VERDE='\e[1;92m'
 AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
-define_wallpaper () { # Baixa e define o papel de parede.
+install_tlp () { # Baixa e instala tlp para notebooks.
+	sudo systemctl disable --now power-profiles-deamon.service
+	sudo apt remove power-profiles-deamon && \
+	sudo apt install tlp tlp-rdw && \
+	sudo systemctl disable --now power-profiles-deamon.service
+}
+
+misc () { # Baixa e define o papel de parede.
 	wget https://github.com/qrocafe1535/noc-debian-config/raw/main/wallapaper/debian-wallpaper.png -O $HOME/Imagens/debian-wallpaper.png
 	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Imagens/debian-wallpaper.png"
 	gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Imagens/debian-wallpaper.png"
+
+	# Habilita o botão de maximizar e minimizar.
+	gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+	
+	# Habilita system tray
+	sudo apt install gnome-shell-extension-appindicator && \
+	gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com
+
 	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
 }
 
@@ -57,12 +72,6 @@ travas_apt () { # Remove travas do apt
 	sudo rm /var/lib/dpkg/lock-frontend
 	sudo rm /var/cache/apt/archives/lock
 	echo -e "${VERDE}Removido travas no APT${SEM_COR}\n"
-	sleep 1
-}
-
-misc () { # Adiciona arquitetura i386x843 (32 bits) e função na barra de ferramentas.
-	sudo dpkg --add-architecture i386
-	echo -e "\n${VERDE}Adicionado Misc!${SEM_COR}\n"
 	sleep 1
 }
 
@@ -124,15 +133,17 @@ suporte_flatpak () { # Instala suporte a flatpak
 instala_winbox () { # Instala Winbox
 	mkdir -p $HOME/Downloads/Winbox
 	git clone https://github.com/mriza/winbox-installer.git $HOME/Downloads/Winbox
+	cd $HOME/Downloads/Winbox
 	chmod a+x $HOME/Downloads/Winbox/winbox-setup
 	sudo bash $HOME/Downloads/Winbox/winbox-setup install
-	sudo ln -s /usr/local/bin/winbox.sh /usr/bin/winbox
+	sudo ln -s /usr/local/bin/winbox.exe $HOME/.wine/drive_c/winbox/winbox.exe
+	cd ~/
 }
 
 instala_dude () { # Instala The Dude Client 6.48.6
 	mkdir -p $HOME/Downloads/Dude
 	wget -P $HOME/Downloads/Dude https://download.mikrotik.com/routeros/6.48.6/dude-install-6.48.6.exe 
-	wine $HOME/Downloads//Dude/dude-install-6.48.6.exe
+	wine $HOME/Downloads/Dude/dude-install-6.48.6.exe
 }
 
 mk_soft () { # Pergunta se deseja instalar os apps da mikrotik. (recomendado)
@@ -191,27 +202,16 @@ instala_wine () { # Adiciona arquitetura de 32 bits e instala o Wine
       fonts-wine
 }
 
-# instala_wine () { # Instala o wine no debian.
-# 	sudo dpkg --add-architecture i386
-# 	sudo mkdir -pm755 /etc/apt/keyrings
-# 	sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-# 	sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
-# 	sudo apt update
-# 	sudo apt install --install-recommends winehq-stable -y
-# 	echo -e "${VERDE}Wine instalado...${SEM_COR}\n"
-# 	sleep 1
-# }
-
 main_update_debian () {
 	echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 	sleep 3
 	testes_internet
 	travas_apt
 	instala_zramtool
+	install_tlp
 	instala_apt_packages
 	repositorio_non-free
 	misc
-	define_wallpaper
 	instala_wine
 	system_update
 	unattended-upgrade
