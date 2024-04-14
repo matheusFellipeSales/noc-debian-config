@@ -7,6 +7,22 @@ VERDE='\e[1;92m'
 AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
+proximo_boot () {
+	# Definir os comandos a serem adicionados
+	commands=(
+	    "gnome-extensions enable ubuntu-appindicators@ubuntu.com"
+	    "xdg-settings set default-web-browser google-chrome.desktop"
+	)
+
+	# Adicionar os comandos ao arquivo rc.local
+	for cmd in "${commands[@]}"; do
+	    grep -qF "$cmd" /etc/rc.local || echo "$cmd" | sudo tee -a /etc/rc.local > /dev/null
+	done
+
+	# Tornar o arquivo rc.local executável
+	sudo chmod +x /etc/rc.local
+}
+
 install_tlp () { # Baixa e instala tlp para notebooks.
 	sudo systemctl disable --now power-profiles-daemon.service
 	sudo apt remove power-profiles-daemon -y && \
