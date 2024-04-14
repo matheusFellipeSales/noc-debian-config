@@ -7,6 +7,18 @@ VERDE='\e[1;92m'
 AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
+define_wallpaper () { # Baixa e define o papel de parede.
+	wget https://github.com/qrocafe1535/noc-debian-config/raw/main/wallapaper/debian-wallpaper.png -O $HOME/Imagens/debian-wallpaper.png
+	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Imagens/debian-wallpaper.png"
+	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
+}
+
+instala_zramtool () { # Habilita o swap em arquivo (Zram).
+	sudo apt install zram-tools
+	echo -e "ALGO=zstd\nPERCENT=20" | sudo tee -a /etc/default/zramswap
+	echo -e "\n${VERDE}Habilitado suporte Zram!${SEM_COR}\n"
+}
+
 instala_adw3 () { # Habilita suporte a temas libadwaita trazendo melhora visual ao desktop.
 	mkdir -p $HOME/Downloads/adw3
 	wget -P $HOME/Downloads/adw3 https://github.com/lassekongo83/adw-gtk3/releases/download/v5.1/adw-gtk3v5-1.tar.xz
@@ -183,9 +195,11 @@ main_update_debian () {
 	sleep 3
 	testes_internet
 	travas_apt
+	instala_zramtool
 	instala_apt_packages
 	repositorio_non-free
 	misc
+	define_wallpaper
 	instala_wine
 	system_update
 	unattended-upgrade
