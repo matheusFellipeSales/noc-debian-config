@@ -19,6 +19,9 @@ misc () { # Baixa e define o papel de parede.
 	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Imagens/debian-wallpaper.png"
 	gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Imagens/debian-wallpaper.png"
 
+	# Fix pesquisa lenta dos apps.
+	gsettings set org.gnome.desktop.search-providers disable-external true
+
 	# Habilita o botão de maximizar e minimizar.
 	gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
@@ -26,7 +29,7 @@ misc () { # Baixa e define o papel de parede.
 	gsettings set org.gnome.desktop.sound event-sounds false
 	
 	# Habilita system tray.
-	sudo apt install gnome-shell-extension-appindicator -y && \
+	sudo apt install gnome-shell-extension-appindicator -y
 	gnome-extensions enable ubuntu-appindicators@ubuntu.com
 
 	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
@@ -168,11 +171,11 @@ mk_soft () { # Pergunta se deseja instalar os apps da mikrotik. (recomendado)
     esac
 }
 
-
 instala_chrome () { # Instala google chrome
 	mkdir -p $HOME/Downloads/chrome
 	wget -P $HOME/Downloads/chrome https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 	sudo sudo dpkg -i $HOME/Downloads/chrome/google-chrome-stable_current_amd64.deb
+	xdg-settings set default-web-browser google-chrome.desktop
 	echo -e "\n${VERDE}Instalado Google Chrome${SEM_COR}\n"
 	sleep 1
 }
