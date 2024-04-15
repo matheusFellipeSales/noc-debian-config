@@ -202,12 +202,15 @@ instala_chrome () { # Instala google chrome
 system_clean () {
 	sudo apt update -y
 	flatpak update -y
+	sudo apt upgrade -y && \
+	sudo apt full-upgrade -y
+	sudo apt install -f -y
 	sudo apt autoclean -y
 	sudo apt autoremove -y
-	sudo apt install -f -y
 	sudo rm -r $HOME/Downloads/chrome
 	sudo rm -r $HOME/Downloads/Dude
 	sudo rm -r $HOME/Downloads/Winbox
+	sudo rm -r $HOME/Downloads/adw3
 	echo -e "\n${VERDE}Sistema limpo!${SEM_COR}\n"
 	sleep 1
 }
