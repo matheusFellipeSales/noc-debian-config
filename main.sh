@@ -162,6 +162,7 @@ instala_winbox () { # Instala Winbox
 	cd $HOME/Downloads/Winbox
 	chmod a+x $HOME/Downloads/Winbox/winbox-setup
 	sudo bash $HOME/Downloads/Winbox/winbox-setup install
+	mkdir -p $HOME/.wine/drive_c/winbox
 	sudo ln -s /usr/local/bin/winbox.exe $HOME/.wine/drive_c/winbox/winbox.exe
 	cd ~/
 }
