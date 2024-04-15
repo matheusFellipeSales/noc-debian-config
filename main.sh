@@ -195,7 +195,8 @@ mk_soft () { # Pergunta se deseja instalar os apps da mikrotik. (recomendado)
 instala_chrome () { # Instala google chrome
 	mkdir -p $HOME/Downloads/chrome
 	wget -P $HOME/Downloads/chrome https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-	sudo sudo dpkg -i $HOME/Downloads/chrome/google-chrome-stable_current_amd64.deb
+	sudo dpkg -i $HOME/Downloads/chrome/google-chrome-stable_current_amd64.deb
+	sudo apt install -f -y
 	echo -e "\n${VERDE}Instalado Google Chrome${SEM_COR}\n"
 	sleep 1
 }
