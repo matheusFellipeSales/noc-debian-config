@@ -179,8 +179,8 @@ mk_soft () { # Pergunta se deseja instalar os apps da mikrotik. (recomendado)
 	case $resposta in
 	    s|S)
 	        echo -e "${VERDE}Instalando...${SEM_COR}"
-	        instala_winbox
 	        instala_dude
+	        instala_winbox
             ;;
 	    n|N)
         	echo -e "\nPulando instalação...\n"
