@@ -20,5 +20,5 @@ chmod +x main.sh
     
 ## Autor
 
-- [@qrocafe1535](https://www.github.com/octokatherine)
+- [@qrocafe1535](https://github.com/qrocafe1535)
 
