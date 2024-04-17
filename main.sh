@@ -116,7 +116,6 @@ programas_para_instalar=( # Lisagem de programas a serem instalados.
 	network-manager-l2tp-gnome
 	apt-transport-https
 	ca-certificates
-	libreswan
 	libfuse2
 	curl
 	scrot
@@ -130,8 +129,6 @@ programas_para_instalar=( # Lisagem de programas a serem instalados.
 	python3-pip
 	python3-venv
 	python3-setuptools
-	apt-transport-https
-	ca-certificates
 	software-properties-common
 	printer-driver-all
 	gnome-shell-extension-appindicator
