@@ -51,7 +51,10 @@ misc () { # Baixa e define o papel de parede.
 	# Desabilita barulho chato do dude.
 	gsettings set org.gnome.desktop.sound event-sounds false
 
-	echo -e "\n${VERDE}Papel de parede definido!${SEM_COR}\n"
+	# Habilita clique no touchpad.
+	gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
+
+	echo -e "\n${VERDE}Setada algumas configurações do gnome!${SEM_COR}\n"
 }
 
 instala_zramtool () { # Habilita o swap em arquivo (Zram).
@@ -171,12 +174,12 @@ instala_dude () { # Instala The Dude Client 6.48.6
 }
 
 mk_soft () { # Pergunta se deseja instalar os apps da mikrotik. (recomendado)
-	echo "Você deseja instalar o Winbox & TheDudeClient? (s/n)"
-	read resposta
+	echo "Você deseja instalar o Winbox & TheDudeClient? (s/N)"
+	read resposta_instalar
 
-	case $resposta in
+	case $resposta_instalar in
 	    s|S)
-	        echo -e "${VERDE}Instalando...${SEM_COR}"
+	        echo -e "${VERDE}Instalando mikrotik services...${SEM_COR}"
 	        instala_dude
 	        instala_winbox
             ;;
@@ -252,6 +255,24 @@ main_update_debian () {
 	sleep 2
 }
 
+pergunta_continuar () {
+	echo "O script fará inúmeras alterações, deseja continuar? (s/N)"
+	read resposta
+
+	case $resposta in
+	    s|S)
+			echo "Iniciando instalação..."
+			main_update_debian
+            ;;
+	    n|N)
+        	echo -e "Saindo..."
+            ;;
+	    *)
+	        echo "Opção inválida."
+	        ;;
+    esac
+}
+
 main () {
     if [[ $UID -eq 0 ]]; then # Verifica se for root fecha o programa.
         echo -e "\n${VERMELHO}[ERRO]${SEM_COR} O programa não deve ser executado como root."
@@ -261,10 +282,7 @@ main () {
 
     # Verifica se o SO é Debian.
     if [ "$(lsb_release -is)" == "Debian" ]; then
-        echo "Iniciando configuração!"
-        sleep 2
-        clear
-        main_update_debian
+        pergunta_continuar
     else
         echo -e "${VERMELHO}O script foi feito pensado apenas no debian stable!${SEM_COR}"
         exit 1
