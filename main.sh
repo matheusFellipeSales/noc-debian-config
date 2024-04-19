@@ -7,6 +7,28 @@ VERDE='\e[1;92m'
 AZUL='\e[1;36m'
 SEM_COR='\e[0m'
 
+##############################################################################
+#                                  FUNÇÕES                                   #
+##############################################################################
+
+
+codecs_proprietarios () {
+	# Realiza a instação dos codecs proprietários.
+	sudo apt install -y faad ffmpeg gstreamer1.0-fdkaac gstreamer1.0-libav \
+	gstreamer1.0-vaapi gstreamer1.0-plugins-bad gstreamer1.0-plugins-base \
+	gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly lame libavcodec-extra \
+	libavcodec-extra59 libavdevice59 libgstreamer1.0-0 sox twolame vorbis-tools
+
+	# Suporte a descompactação
+	sudo apt install -y arc arj cabextract lhasa p7zip p7zip-full p7zip-rar rar \
+	unrar unace unzip xz-utils zip
+
+	# Remove lixo desnecessário.
+	sudo apt autoremove -y
+
+	echo -e "\n${VERDE}Adicionado CODECS e descompactação${SEM_COR}\n"
+}
+
 inicializacao () {
 	# Verifica se o diretório ~/.config/autostart existe, se não, cria.
 	if [ ! -d ~/.config/autostart ]; then
@@ -37,7 +59,8 @@ install_tlp () { # Baixa e instala tlp para notebooks.
 	sudo systemctl enable --now tlp.service
 }
 
-misc () { # Baixa e define o papel de parede.
+misc () {
+	# Baixa e define o papel de parede. (Muito importante.)
 	wget https://github.com/qrocafe1535/noc-debian-config/raw/main/wallapaper/debian-wallpaper.png -O $HOME/Imagens/debian-wallpaper.png
 	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Imagens/debian-wallpaper.png"
 	gsettings set org.gnome.desktop.background picture-uri-dark "file://$HOME/Imagens/debian-wallpaper.png"
@@ -68,7 +91,8 @@ instala_adw3 () { # Habilita suporte a temas libadwaita trazendo melhora visual 
 	wget -P $HOME/Downloads/adw3 https://github.com/lassekongo83/adw-gtk3/releases/download/v5.1/adw-gtk3v5-1.tar.xz
 	sudo tar -xf $HOME/Downloads/adw3/adw-gtk3v5-1.tar.xz -C /usr/share/themes
 	flatpak install --noninteractive org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
-	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+	gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && \
+	gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 	echo -e "\n${VERDE}Habilitado suporte a thema legado libadwaita dark!${SEM_COR}\n"
 	sleep 1
 }
@@ -122,6 +146,7 @@ programas_para_instalar=( # Lisagem de programas a serem instalados.
 	libfuse2
 	curl
 	scrot
+	vlc
 	vim
 	wget
 	htop
@@ -232,6 +257,11 @@ instala_wine () { # Adiciona arquitetura de 32 bits e instala o Wine
       fonts-wine
 }
 
+
+##############################################################################
+#                            INICIO DO PROCESSO                              #
+##############################################################################
+
 main_update_debian () {
 	echo -e "\n${AZUL}Começando em 3... 2... 1....\n${SEM_COR}\n"
 	sleep 3
@@ -239,8 +269,9 @@ main_update_debian () {
 	travas_apt
 	instala_zramtool
 	install_tlp
-	instala_apt_packages
 	repositorio_non-free
+	instala_apt_packages
+	codecs_proprietarios
 	misc
 	instala_wine
 	system_update
