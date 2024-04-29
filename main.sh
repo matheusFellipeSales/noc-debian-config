@@ -159,6 +159,7 @@ programas_para_instalar=( # Lisagem de programas a serem instalados.
 	python3-setuptools
 	software-properties-common
 	printer-driver-all
+	ttf-mscorefonts-installer
 	gnome-shell-extension-appindicator
 )
 
@@ -238,6 +239,9 @@ system_clean () {
 	sudo rm -r $HOME/Downloads/Dude
 	sudo rm -r $HOME/Downloads/Winbox
 	sudo rm -r $HOME/Downloads/adw3
+
+	# Remove cache de fonts.
+	fc-cache -f -v > /dev/null 2>&1
 	echo -e "\n${VERDE}Sistema limpo!${SEM_COR}\n"
 	sleep 1
 }
