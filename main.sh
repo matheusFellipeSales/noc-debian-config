@@ -157,6 +157,7 @@ programas_para_instalar=( # Lisagem de programas a serem instalados.
 	python3-pip
 	python3-venv
 	python3-setuptools
+	dnsutils
 	software-properties-common
 	printer-driver-all
 	ttf-mscorefonts-installer
