@@ -77,6 +77,10 @@ misc () {
 	# Habilita clique no touchpad.
 	gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
 
+	# Melhorando fontes.
+	gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'
+	gsettings set org.gnome.desktop.interface font-hinting 'slight'
+
 	echo -e "\n${VERDE}Setada algumas configurações do gnome!${SEM_COR}\n"
 }
 
@@ -247,7 +251,7 @@ system_clean () {
 	sleep 1
 }
 
-repositorio_non-free () { # Habilita o repositório non-free
+repositorio_non-free () { # Habilita o repositório non-free e contrib
 	sudo apt-add-repository contrib non-free -y
 }
 
