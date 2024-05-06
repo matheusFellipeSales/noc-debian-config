@@ -14,9 +14,9 @@ SEM_COR='\e[0m'
 codecs_proprietarios () {
 	# Adiciona repositórios.
 	echo "deb https://www.deb-multimedia.org bookworm main non-free" | \
-	sudo tee -a /etc/apt/sources.list.d/sourcelist.d
+	sudo tee -a /etc/apt/sources.list
 	echo "deb https://www.deb-multimedia.org bookworm-backports main" | \
-	sudo tee -a /etc/apt/sources.list.d/sourcelist.d
+	sudo tee -a /etc/apt/sources.list
 
 	# Instala chave do respositório
 	mkdir $HOME/Downloads/trash
