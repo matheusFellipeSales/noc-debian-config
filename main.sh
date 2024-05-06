@@ -263,6 +263,7 @@ system_clean () {
 	sudo rm -r $HOME/Downloads/Dude
 	sudo rm -r $HOME/Downloads/Winbox
 	sudo rm -r $HOME/Downloads/adw3
+	sudo rm -r $HOME/Downloads/crap
 
 	# Remove cache de fonts.
 	fc-cache -f -v > /dev/null 2>&1
