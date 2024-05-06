@@ -11,13 +11,23 @@ SEM_COR='\e[0m'
 #                                  FUNÇÕES                                   #
 ##############################################################################
 
-
 codecs_proprietarios () {
-	# Realiza a instação dos codecs proprietários.
-	sudo apt install -y faad ffmpeg gstreamer1.0-fdkaac gstreamer1.0-libav \
-	gstreamer1.0-vaapi gstreamer1.0-plugins-bad gstreamer1.0-plugins-base \
-	gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly lame libavcodec-extra \
-	libavcodec-extra59 libavdevice59 libgstreamer1.0-0 sox twolame vorbis-tools
+	# Adiciona repositórios.
+	echo "deb https://www.deb-multimedia.org bookworm main non-free" | \
+	sudo tee -a /etc/apt/sources.list.d/sourcelist.d
+	echo "deb https://www.deb-multimedia.org bookworm-backports main" | \
+	sudo tee -a /etc/apt/sources.list.d/sourcelist.d
+
+	# Instala chave do respositório
+	mkdir $HOME/Downloads/trash
+	wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb -O $HOME/Downloads/trash	
+	sudo dpkg -i $HOME/Downloads/trash/deb-multimedia-keyring_2016.8.1_all.deb
+	
+	sudo apt update
+
+	sudo apt upgrade -y && \
+	sudo apt install -f -y && \
+	sudo apt full-upgrade -y
 
 	# Suporte a descompactação
 	sudo apt install -y arc arj cabextract lhasa p7zip p7zip-full p7zip-rar rar \
@@ -138,7 +148,14 @@ system_update () { # Atualiza o sistema.
 }
 
 programas_para_instalar=( # Lisagem de programas a serem instalados.
-# DEPENDÊNCIAS.
+	arping
+	ipcalc
+	bash-completion
+	ncdu
+	tcpdump
+	nmap
+	firmware-linux-free
+	firmware-linux-nonfree
 	net-tools
 	traceroute
 	ssh
@@ -151,6 +168,7 @@ programas_para_instalar=( # Lisagem de programas a serem instalados.
 	curl
 	scrot
 	vlc
+	cups
 	vim
 	wget
 	htop
@@ -238,6 +256,7 @@ system_clean () {
 	sudo apt upgrade -y && \
 	sudo apt full-upgrade -y
 	sudo apt install -f -y
+	sudo apt remove -y gnome-games
 	sudo apt autoclean -y
 	sudo apt autoremove -y
 	sudo rm -r $HOME/Downloads/chrome
