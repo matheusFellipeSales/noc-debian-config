@@ -20,7 +20,7 @@ codecs_proprietarios () {
 
 	# Instala chave do respositório
 	mkdir $HOME/Downloads/trash
-	wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb -O $HOME/Downloads/trash	
+	wget -P $HOME/Downloads/trash http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb	
 	sudo dpkg -i $HOME/Downloads/trash/deb-multimedia-keyring_2016.8.1_all.deb
 	
 	sudo apt update
