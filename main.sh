@@ -96,7 +96,7 @@ misc () {
 
 instala_zramtool () { # Habilita o swap em arquivo (Zram).
 	sudo apt install zram-tools -y
-	echo -e "ALGO=zstd\nPERCENT=20" | sudo tee -a /etc/default/zramswap
+	echo -e "ALGO=zstd\nPERCENT=30" | sudo tee -a /etc/default/zramswap
 	echo -e "\n${VERDE}Habilitado suporte Zram!${SEM_COR}\n"
 }
 
