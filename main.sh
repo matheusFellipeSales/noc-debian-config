@@ -111,10 +111,33 @@ instala_adw3 () { # Habilita suporte a temas libadwaita trazendo melhora visual 
 	sleep 1
 }
 
-unattended-upgrades () { # Habilitando security updates automáticos.
-	sudo apt install unattended-upgrades -y
-	sudo systemctl enable --now unattended-upgrades
-	echo -e "\n${VERDE}Habilitado Security Updates Automáticos com sucesso!${SEM_COR}\n"
+unattended-upgrades () {
+	# Atualizar lista de pacotes
+	sudo apt-get update
+
+	# Instalar unattended-upgrades
+	sudo apt-get install -y unattended-upgrades
+
+	# Configurar unattended-upgrades
+	sudo bash -c 'cat > /etc/apt/apt.conf.d/50unattended-upgrades <<EOF
+	Unattended-Upgrade::Origins-Pattern {
+	    "origin=Debian,codename=\${distro_codename}-updates";
+	    "origin=Debian,codename=\${distro_codename}-security";
+	};
+	EOF'
+
+	# Configurar auto-upgrades
+	sudo bash -c 'cat > /etc/apt/apt.conf.d/20auto-upgrades <<EOF
+	APT::Periodic::Update-Package-Lists "1";
+	APT::Periodic::Download-Upgradeable-Packages "1";
+	APT::Periodic::AutocleanInterval "7";
+	APT::Periodic::Unattended-Upgrade "1";
+	EOF'
+
+	# Reiniciar o serviço unattended-upgrades
+	sudo systemctl restart unattended-upgrades
+
+	echo -e "\n${VERDE}Habilitado atualizações automáticas!${SEM_COR}\n"
 }
 
 cron_update_auto () { # Automatiza update do sistema.
