@@ -118,33 +118,31 @@ unattended-upgrades () { # Atualizações automáticas.
 	# Instalar unattended-upgrades
 	sudo apt-get install -y unattended-upgrades
 
-	# Configurar unattended-upgrades
-	sudo bash -c 'cat > /etc/apt/apt.conf.d/50unattended-upgrades <<EOF
-	Unattended-Upgrade::Origins-Pattern {
-	    "origin=Debian,codename=\${distro_codename}-updates";
-	    "origin=Debian,codename=\${distro_codename}-security";
-	};
-	EOF'
+	# Configurar unattended-upgrades para atualizar todos os pacotes (atualizações gerais e de segurança)
+	sudo tee /etc/apt/apt.conf.d/50unattended-upgrades > /dev/null << 'EOF'
+Unattended-Upgrade::Origins-Pattern {
+    "origin=Debian,codename=${distro_codename}-updates";
+    "origin=Debian,codename=${distro_codename}-security";
+    "origin=Debian,codename=${distro_codename}-stable";
+    "origin=Debian,codename=${distro_codename}-backports";
+};
+
+// Remover pacotes obsoletos automaticamente
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+EOF
 
 	# Configurar auto-upgrades
-	sudo bash -c 'cat > /etc/apt/apt.conf.d/20auto-upgrades <<EOF
-	APT::Periodic::Update-Package-Lists "1";
-	APT::Periodic::Download-Upgradeable-Packages "1";
-	APT::Periodic::AutocleanInterval "7";
-	APT::Periodic::Unattended-Upgrade "1";
-	EOF'
+	sudo tee /etc/apt/apt.conf.d/20auto-upgrades > /dev/null << 'EOF'
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::AutocleanInterval "7";
+APT::Periodic::Unattended-Upgrade "1";
+EOF
 
 	# Reiniciar o serviço unattended-upgrades
 	sudo systemctl enable --now unattended-upgrades
+	echo -e "\n${VERDE}[SUCESSO] - Habilitado upgrades automáticos.${SEM_COR}\n"
 
-	echo -e "\n${VERDE}Habilitado atualizações automáticas!${SEM_COR}\n"
-}
-
-cron_update_auto () { # Automatiza update do sistema.
-	# exporta o comando para o arquivo em /etc/crontab
-	echo "0 9 * * * /usr/bin/apt update && /usr/bin/apt upgrade -y && /usr/bin/apt dist-upgrade -y && /usr/bin/apt autoremove -y " | sudo tee -a /etc/crontab
-	echo -e "\n${VERDE}Habilitado Update Automático com sucesso todo dia as 09:00.${SEM_COR}\n"
-	sleep 1
 }
 
 testes_internet () { # Testa conexão com a internet.
