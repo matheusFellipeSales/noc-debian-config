@@ -111,7 +111,7 @@ instala_adw3 () { # Habilita suporte a temas libadwaita trazendo melhora visual 
 	sleep 1
 }
 
-unattended-upgrades () {
+unattended-upgrades () { # Atualizações automáticas.
 	# Atualizar lista de pacotes
 	sudo apt-get update
 
@@ -135,7 +135,7 @@ unattended-upgrades () {
 	EOF'
 
 	# Reiniciar o serviço unattended-upgrades
-	sudo systemctl restart unattended-upgrades
+	sudo systemctl enable --now unattended-upgrades
 
 	echo -e "\n${VERDE}Habilitado atualizações automáticas!${SEM_COR}\n"
 }
