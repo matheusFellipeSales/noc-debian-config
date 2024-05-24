@@ -10,6 +10,38 @@ SEM_COR='\e[0m'
 ##############################################################################
 #                                  FUNÇÕES                                   #
 ##############################################################################
+desabilita_wayland () {
+	echo "Você deseja desabilitar o Wayland por padrão? (S/n)"
+	read read_wayland
+
+	case $read_wayland in
+	    n|N)
+        	echo -e "\nCerto...\n"
+            ;;
+	    *)
+			# Descomenta WaylandEnable=false
+	        sudo sed -i 's/^#WaylandEnable=false/WaylandEnable=false/' "/etc/gdm3/daemon.conf"
+	        echo -e "\n${VERDE}[SUCESSO] - Wayland desabilitado.${SEM_COR}\n"
+	        ;;
+    esac
+}
+
+instala_anydesk () {
+	# Adicionar o repositório do AnyDesk à lista de fontes
+	echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/anydesk.list
+
+	# Baixar e instalar a chave GPG do AnyDesk no diretório trusted.gpg.d
+	wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/anydesk.gpg > /dev/null
+
+	# Atualizar a lista de pacotes
+	sudo apt update
+
+	# Instalar o AnyDesk
+	sudo apt install -y anydesk
+
+	# Desabilita no boot.
+	sudo systemctl disable anydesk.service
+}
 
 codecs_proprietarios () {
 	# Adiciona repositórios.
@@ -284,7 +316,7 @@ system_clean () {
 	sudo rm -r $HOME/Downloads/Dude
 	sudo rm -r $HOME/Downloads/Winbox
 	sudo rm -r $HOME/Downloads/adw3
-	sudo rm -r $HOME/Downloads/crap
+	sudo rm -r $HOME/Downloads/trash
 
 	# Remove cache de fonts.
 	fc-cache -f -v > /dev/null 2>&1
@@ -328,7 +360,9 @@ main_update_debian () {
 	unattended-upgrades
 	suporte_flatpak
 	instala_adw3
+	instala_anydesk
 	instala_chrome
+	desabilita_wayland
 	mk_soft
 	system_clean
 	inicializacao
