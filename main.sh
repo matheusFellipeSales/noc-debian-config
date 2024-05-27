@@ -95,9 +95,22 @@ inicializacao () {
 }
 
 install_tlp () { # Baixa e instala tlp para notebooks.
+
+	# Remove o deamon padrão do gnome e instala o TLP
 	sudo systemctl disable --now power-profiles-daemon.service
 	sudo apt remove power-profiles-daemon -y && \
 	sudo apt install tlp tlp-rdw -y && \
+
+	# Configurações a serem adicionadas/alteradas no arquivo de configuração do TLP
+	CONFIG_FILE="/etc/tlp.conf"
+	CPU_AC="CPU_ENERGY_PERF_POLICY_ON_AC=balance_power"
+	CPU_BAT="CPU_ENERGY_PERF_POLICY_ON_BAT=power"
+
+	# Adiciona ou altera as linhas de configuração no arquivo
+	sudo sed -i "s/^#*\s*CPU_ENERGY_PERF_POLICY_ON_AC=.*/$CPU_AC/" $CONFIG_FILE
+	sudo sed -i "s/^#*\s*CPU_ENERGY_PERF_POLICY_ON_BAT=.*/$CPU_BAT/" $CONFIG_FILE
+
+	# Habilita e inicia o tlp.service
 	sudo systemctl enable --now tlp.service
 }
 
