@@ -370,7 +370,9 @@ main_update_debian () {
 	misc
 	instala_wine
 	system_update
-	unattended-upgrades
+		# Desativado pois a gnome software já faz o servíço
+		# a partir da versão 12.5.
+	# unattended-upgrades
 	suporte_flatpak
 	instala_adw3
 	instala_anydesk
